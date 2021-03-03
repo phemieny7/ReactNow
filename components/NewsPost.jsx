@@ -1,49 +1,66 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import React,{useState} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Button, Image } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import Moment from 'moment'
-import { Ionicons,FontAwesome } from '@expo/vector-icons'; 
+import { Ionicons,FontAwesome } from '@expo/vector-icons';
+import Modal from 'react-native-modal'; 
+
 
 export default function NewsPost({result}) {
+    const [isModalVisible, setModalVisible] = useState(false);
+  
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     return (
-        <TouchableWithoutFeedback onPress={console.log(`you press article ${result.title}`)}>
-            <View style={styles.rectangle4}>
-                <View style={styles.avatar}> 
-                        <Avatar
-                            rounded
-                            size="medium"
-                            source={{
-                                uri: result.urlToImage,
-                            }}
-                        />
-                </View>
-                <Text style={styles.author}>{result.source.name}</Text>
-                <Text style={styles.time}>{Moment( result.publisheAt).fromNow()}</Text>
-                <Text style={styles.title}>
-                        { result.title}
-                    </Text>
-                    <View style={styles.reactions}>
-                        <View>
-                            <Ionicons name='heart' color='coral' size={30}/>
-                            <Text style={styles.likes}>33k</Text>
-                        </View>
-                        <View>
-                            <FontAwesome name='microphone' color='white' size={30}/>
-                            <Text style={styles.likes}>33k</Text>
-                        </View>
-                    
-                        <FontAwesome name="eye" size={24} color="white" />
+        <View>
+            <TouchableWithoutFeedback onPress={toggleModal}>
+                <View style={styles.rectangle4}>
+                    <View style={styles.avatar}> 
+                            <Avatar
+                                rounded
+                                size="medium"
+                                source={{
+                                    uri: result.urlToImage,
+                                }}
+                            />
                     </View>
-                    
+                    <Text style={styles.author}>{result.source.name}</Text>
+                    <Text style={styles.time}>{Moment( result.publishedAt).fromNow()}</Text>
+                    <Text style={styles.title}>
+                            { result.title}
+                        </Text>
+                        <View style={styles.reactions}>
+                            <View>
+                                <Ionicons name='heart' color='coral' size={30}/>
+                                <Text style={styles.likes}>33k</Text>
+                            </View>
+                            <View>
+                                <FontAwesome name='microphone' color='white' size={30}/>
+                                <Text style={styles.likes}>33k</Text>
+                            </View>
+                        
+                            <FontAwesome name="eye" size={24} color="white" />
+                        </View> 
+                    </View>
+            </TouchableWithoutFeedback>
+            
+            <Modal isVisible={isModalVisible}>
+                <View style={styles.modal}>
+                    <Image source={{
+                                    uri: result.urlToImage,
+                                }} style={{width: '100%', height: 200}} />
+                    <Text style={{color: 'white'}}>{result.content}!</Text>
+                    <Button title="Hide modal" onPress={toggleModal} />
                 </View>
-        </TouchableWithoutFeedback>
+            </Modal>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     rectangle4: {
-         height: 202,
-        // width: 370,
+        height: 202,
         borderRadius: 8,
         shadowColor: "rgba(0,0,0,0.5)",
         shadowOffset: {
@@ -101,5 +118,9 @@ const styles = StyleSheet.create({
         left: 30,
         bottom: 23
     },
+
+    modal: {
+        marginTop: 30
+    }
     
 })

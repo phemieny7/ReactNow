@@ -1,46 +1,35 @@
 import {useEffect, useState, useCallback} from 'react'
 import newsApi from '../api/newsApi'
-export  default()=>{
-    
+export  default HomeHook =()=>{
+    const [isLoading, setIsLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState('');
+    const [homeViewData, setHomeViewData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
     
     const news = async (url, params) => {
         try {
             let response = await newsApi.get(url, params);
              setHomeViewData(response.data.articles);
-             searchViewData(response.data.articles);
-             (response.data.articles.length)
+             console.log(response.data.articles)
         } catch (error) {
            setErrorMessage('something went wrong')
         }
     };
 
-   const [homeViewData, setHomeViewData] = useState([]);
     useEffect(()=>{
-        news('/top-headlin e', {
-            params:{
-                 country:'ng',
-                 pageSize:20
-            }
-        })
-    }, [homeViewData])
+        setIsLoading(true);
+        console.log('loading start')
+        news('/top-headlines', {
+                params:{
+                    country:'ng',
+                    pageSize:40
+                }
+            }).then(() => setIsLoading(false))
+        }, [])
 
-   const [searchViewData, setSearchViewData] = useState([]);
-   useEffect(()=>{
-    news('/everything', {
-        params:{
-             q:'nigeria',
-             pageSize:40
-        }
-    })
-    }, [searchViewData])
-
-   const [tvViewData, setTvViewData] = useState([]);
-
-   const [refreshing, setRefreshing] = useState(false);
    const onRefresh = useCallback(() => {
         setRefreshing(true);
-        news('top-headline', {
+        news('top-headlines', {
             params:{
                 country:'ng',
                 pageSize:40
@@ -49,5 +38,6 @@ export  default()=>{
         console.log('refreshed')
     }, [refreshing]);
 
-    return [news, homeViewData,  onRefresh, errorMessage, refreshing];
+
+    return [news, homeViewData, onRefresh, refreshing, errorMessage,isLoading] ;
 }

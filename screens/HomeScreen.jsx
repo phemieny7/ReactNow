@@ -5,19 +5,18 @@ import Logo from '../components/Logo'
 import NewsList from '../components/NewsList'
 import {AntDesign} from '@expo/vector-icons'
 import Icon from '../components/Icon'
+import NewsSkeleton from '../components/NewsSkeleton'
 
-import newsHook from '../hooks/newsHook'
+import HomeHook from '../hooks/newsHook'
 
 
 const HomeScreen = () => {
     const [ news, 
-            homeViewData, 
-            searchViewData, 
-            tvViewData, 
-            onRefresh, 
-            errorMessage,
-            refreshing
-        ] = newsHook()
+            homeViewData,
+            onRefresh,
+            refreshing,
+            isLoading,
+        ] = HomeHook()
     
     return (
         <SafeAreaView style={styles.container}>
@@ -51,7 +50,9 @@ const HomeScreen = () => {
                             </View>
                     </View>
                     <View style={styles.card}>
-                        <NewsList result={homeViewData}/> 
+                        {!isLoading ? <NewsList result={homeViewData} onRefresh={onRefresh} refreshing={refreshing}/> :
+                            <Text style={{color: 'white'}}>Loading</Text>  
+                        }
                     </View>
               </View>
             
