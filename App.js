@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react'; 
-import { StyleSheet, SafeAreaView} from 'react-native'
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './screens/WelcomeScreen'
@@ -9,8 +8,10 @@ import SignupScreen from './screens/SignupScreen'
 import ForgetScreen from './screens/ForgetScreen'
 import TermScreen from './screens/TermScreen'
 import HomeScreen from './screens/HomeScreen'
+import ReactScreen from './screens/ReactScreen'
+import { Provider } from './context/NewsContext';
 
-export default function App({navigation}) {
+export default function App({navigation}){ 
   const Stack = createStackNavigator();
   return (
        <NavigationContainer>
@@ -41,7 +42,12 @@ export default function App({navigation}) {
             name="Home" 
             component={HomeScreen} 
           />
+          <Stack.Screen 
+            name="React" 
+            component={ReactScreen} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
   );
 }
+

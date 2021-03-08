@@ -1,32 +1,33 @@
 import {useEffect, useState, useCallback} from 'react'
 import newsApi from '../api/newsApi'
-export  default HomeHook =()=>{
+export  default HomeHook = () =>{
     const [isLoading, setIsLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState('');
-    const [homeViewData, setHomeViewData] = useState([]);
+    const [homeViewData, setHomeViewData] = useState([]); 
     const [refreshing, setRefreshing] = useState(false);
     
+    //A general function to call newApi 
     const news = async (url, params) => {
         try {
             let response = await newsApi.get(url, params);
              setHomeViewData(response.data.articles);
-             console.log(response.data.articles)
         } catch (error) {
            setErrorMessage('something went wrong')
         }
     };
 
+    //component will mount
     useEffect(()=>{
         setIsLoading(true);
-        console.log('loading start')
         news('/top-headlines', {
                 params:{
                     country:'ng',
-                    pageSize:40
+                    pageSize:100
                 }
             }).then(() => setIsLoading(false))
         }, [])
 
+    // when component refresh
    const onRefresh = useCallback(() => {
         setRefreshing(true);
         news('top-headlines', {
@@ -35,9 +36,8 @@ export  default HomeHook =()=>{
                 pageSize:40
             }
         }).then(() => setRefreshing(false));
-        console.log('refreshed')
     }, [refreshing]);
 
-
+    // make them available to use.
     return [news, homeViewData, onRefresh, refreshing, errorMessage,isLoading] ;
 }

@@ -54,21 +54,21 @@ const WelcomeScreen =({navigation}) => {
             <Text style={styles.orLogInWithText}>Or log in with</Text>
 
             <View style={styles.orLoginWithBox }>
-            <TouchableOpacity style={styles.google}>
-                <Text>
-                    <AntDesign name="google" size={24} color="#db4a39" />
-                </Text> 
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.facebook}>
-                <Text>
-                    <AntDesign name="facebook-square" size={24} color="#3b5998" />
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.twitter}>
-                <Text>
-                    <AntDesign name="twitter" size={24} color="#00acee" />
-                </Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.google}>
+                  <Text>
+                      <AntDesign name="google" size={24} color="#db4a39" />
+                  </Text> 
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.facebook}>
+                  <Text>
+                      <AntDesign name="facebook-square" size={24} color="#3b5998" />
+                  </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.twitter}>
+                  <Text>
+                      <AntDesign name="twitter" size={24} color="#00acee" />
+                  </Text>
+              </TouchableOpacity>
             </View>
            
             {/* Login and Sign Up bottons Ends Here */}

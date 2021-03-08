@@ -1,4 +1,4 @@
-import React , {useState, useEffect, useCallback}from 'react'
+import React , {useContext}from 'react'
 import { View, Text, SafeAreaView, StyleSheet,TouchableOpacity} from 'react-native'
 import TabBar from "../components/TabBar"
 import Logo from '../components/Logo'
@@ -6,17 +6,21 @@ import NewsList from '../components/NewsList'
 import {AntDesign} from '@expo/vector-icons'
 import Icon from '../components/Icon'
 import NewsSkeleton from '../components/NewsSkeleton'
+import {Context as NewsContext} from '../context/NewsContext'
+import SearchComponent from '../components/SearchComponent'
 
 import HomeHook from '../hooks/newsHook'
+ 
 
-
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     const [ news, 
             homeViewData,
             onRefresh,
             refreshing,
             isLoading,
         ] = HomeHook()
+    
+    //const {state, topHeadline } = useContext(NewsContext);
     
     return (
         <SafeAreaView style={styles.container}>
@@ -28,9 +32,11 @@ const HomeScreen = () => {
                 title="Tab1"
                 screenBackgroundColor={{ backgroundColor: 'rgba(36,42,55,1)' }}
             >
-                <View></View>
+                <View>
+                    <SearchComponent/>
+                </View>
            </TabBar.Item>
-
+                
             <TabBar.Item
                icon={require('./../assets/images/icons/home.png')}
                selectedIcon={require('./../assets/images/icons//home.png')}
@@ -50,8 +56,15 @@ const HomeScreen = () => {
                             </View>
                     </View>
                     <View style={styles.card}>
-                        {!isLoading ? <NewsList result={homeViewData} onRefresh={onRefresh} refreshing={refreshing}/> :
-                            <Text style={{color: 'white'}}>Loading</Text>  
+                        {isLoading ? 
+                        <Text style={{color: 'white'}}>Loading</Text>:
+                        <NewsList 
+                            result={homeViewData} 
+                            onRefresh={onRefresh} 
+                            refreshing={refreshing}
+                            onClick={navigation}
+                        />
+                            
                         }
                     </View>
               </View>
